@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../__data__/store';
 import { fetchDataLow } from '../__data__/actions/carsData.actions';
@@ -7,6 +7,8 @@ import { SPadeWrapper } from './Cars.style';
 
 export const App: React.FC = () => {
     const data = useSelector((state: RootState) => state.carsData.data);
+
+    const [sortData, setSortData] = useState(data);
 
     const dispatch = useDispatch();
 
@@ -18,9 +20,13 @@ export const App: React.FC = () => {
         getData();
     }, []);
 
+    useEffect(() => {
+        setSortData(data);
+    }, [data]);
+
     return (
         <SPadeWrapper className='App'>
-            <CarsTable />
+            <CarsTable sortData={sortData} setSortData={setSortData} />
         </SPadeWrapper>
     );
 };

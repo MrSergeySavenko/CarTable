@@ -14,4 +14,5 @@ export interface IDataState {
     isError: boolean;
     error: string;
     data: Array<IData> | null;
+    sortName: string;
 }

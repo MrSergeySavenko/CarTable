@@ -6,8 +6,14 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../__data__/store';
 import { IData } from '../../__data__/models/models';
 import { SCarsChars, SCarsTableItem, SCrossImg, SMainWrapper } from './CarsTable.style';
+import { SortTable } from '../SortTable/SortTable';
 
-export const CarsTable: React.FC = () => {
+interface IProps {
+    sortData: Array<IData> | null;
+    setSortData: (arr: Array<IData>) => void;
+}
+
+export const CarsTable: React.FC<IProps> = ({ sortData, setSortData }) => {
     const data = useSelector((state: RootState) => state.carsData.data);
 
     const [modified, setModifide] = useState(data);
@@ -17,22 +23,22 @@ export const CarsTable: React.FC = () => {
         console.log(modified);
     }, [data]);
 
-    const deleteItem = (i: number, sI: number) => {
-        // @ts-ignore
+    const deleteItem = (i: number) => {
         let cutArr = new Array<any>();
-        let firstCutArr = modified?.slice(0, i);
-        let secondCutArr = modified?.slice(i + 1, modified.length);
+        let firstCutArr = sortData?.slice(0, i);
+        let secondCutArr = sortData?.slice(i + 1, sortData.length);
         cutArr = cutArr.concat(firstCutArr, secondCutArr);
         console.log(cutArr);
+        setSortData(cutArr);
         setModifide(cutArr);
     };
 
     useEffect(() => {
         cardsTableRender();
-    }, [modified]);
+    }, [sortData]);
 
     const cardsTableRender = () => {
-        return modified?.map((item: IData, i) => (
+        return sortData?.map((item: IData, i) => (
             <SCarsTableItem key={uniqueKey(item.name, i)}>
                 <div>
                     <SCarsChars placeholder={String(item.id)} disabled={true} />
@@ -42,13 +48,14 @@ export const CarsTable: React.FC = () => {
                     <SCarsChars placeholder={item.color} disabled={true} />
                     <SCarsChars placeholder={item.price} />
                 </div>
-                <SCrossImg onClick={() => deleteItem(i, i)}>Удалить</SCrossImg>
+                <SCrossImg onClick={() => deleteItem(i)}>Удалить</SCrossImg>
             </SCarsTableItem>
         ));
     };
 
     return (
         <>
+            <SortTable sortData={sortData} setSortData={setSortData} modified={modified} />
             <SMainWrapper>{cardsTableRender()}</SMainWrapper>
         </>
     );

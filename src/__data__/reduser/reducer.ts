@@ -7,6 +7,7 @@ const initialState: IDataState = {
     isLoading: false,
     isError: false,
     error: '',
+    sortName: '',
 };
 
 export const dataSlice = createSlice({
@@ -21,6 +22,9 @@ export const dataSlice = createSlice({
         },
         dataFetchSuccess(state: Draft<IDataState>, action: PayloadAction<Array<IData>>) {
             return { ...state, isLoading: false, data: action.payload };
+        },
+        addSortName(state: Draft<IDataState>, action: PayloadAction<string>) {
+            return { ...state, sortName: action.payload };
         },
     },
 });
