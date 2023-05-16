@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { uniqueKey } from '../../__data__/utils/utils';
 
@@ -10,18 +10,39 @@ import { SCarsChars, SCarsTableItem, SCrossImg, SMainWrapper } from './CarsTable
 export const CarsTable: React.FC = () => {
     const data = useSelector((state: RootState) => state.carsData.data);
 
+    const [modified, setModifide] = useState(data);
+
+    useEffect(() => {
+        setModifide(data);
+        console.log(modified);
+    }, [data]);
+
+    const deleteItem = (i: number, sI: number) => {
+        // @ts-ignore
+        let cutArr = new Array<any>();
+        let firstCutArr = modified?.slice(0, i);
+        let secondCutArr = modified?.slice(i + 1, modified.length);
+        cutArr = cutArr.concat(firstCutArr, secondCutArr);
+        console.log(cutArr);
+        setModifide(cutArr);
+    };
+
+    useEffect(() => {
+        cardsTableRender();
+    }, [modified]);
+
     const cardsTableRender = () => {
-        return data?.map((item: IData, i) => (
+        return modified?.map((item: IData, i) => (
             <SCarsTableItem key={uniqueKey(item.name, i)}>
                 <div>
-                    <SCarsChars placeholder={String(item.id)} />
+                    <SCarsChars placeholder={String(item.id)} disabled={true} />
                     <SCarsChars placeholder={item.name} />
                     <SCarsChars placeholder={item.model} />
-                    <SCarsChars placeholder={item.year} />
-                    <SCarsChars placeholder={item.color} />
+                    <SCarsChars placeholder={item.year} disabled={true} />
+                    <SCarsChars placeholder={item.color} disabled={true} />
                     <SCarsChars placeholder={item.price} />
                 </div>
-                <SCrossImg>Закрыть</SCrossImg>
+                <SCrossImg onClick={() => deleteItem(i, i)}>Удалить</SCrossImg>
             </SCarsTableItem>
         ));
     };

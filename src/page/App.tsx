@@ -18,8 +18,6 @@ export const App: React.FC = () => {
         getData();
     }, []);
 
-    console.log(data);
-
     return (
         <SPadeWrapper className='App'>
             <CarsTable />

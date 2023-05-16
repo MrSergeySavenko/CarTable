@@ -17,10 +17,12 @@ export const SCarsTableItem = styled('div')(() => ({
     padding: '8px 16px',
     border: '1px solid #000',
     flexWrap: 'wrap',
+    alignItems: 'center',
 }));
 
 export const SCarsChars = styled('input')(() => ({
     border: 'none',
+    backgroundColor: '#fff',
 
     '&::-webkit-input-placeholder': {
         color: '#000',
@@ -30,4 +32,5 @@ export const SCarsChars = styled('input')(() => ({
 export const SCrossImg = styled('button')(() => ({
     padding: '4px',
     borderColor: '#000',
+    cursor: 'pointer',
 }));
