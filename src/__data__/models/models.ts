@@ -15,4 +15,10 @@ export interface IDataState {
     error: string;
     data: Array<IData> | null;
     sortName: string;
+    itemId: number;
+    itemName: string;
+    itemModel: string;
+    itemPrice: string;
+    changeArr: Array<IData> | null;
+    arrChangeValue: Array<IData> | null;
 }

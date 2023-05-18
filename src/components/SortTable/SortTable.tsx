@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../__data__/store';
 import { dataSlice } from '../../__data__/reduser';
@@ -8,25 +8,29 @@ import { SSortItemWrapper, SSortText, SSortWrapper } from './SortTable.style';
 
 interface IProps {
     sortData: Array<IData> | null;
-    modified: Array<IData> | null;
     setSortData: (arr: Array<IData>) => void;
 }
 
-export const SortTable: React.FC<IProps> = ({ sortData, setSortData, modified }) => {
+export const SortTable: React.FC<IProps> = ({ sortData, setSortData }) => {
     const [sortClick, setSortClick] = useState(0);
 
-    const { data, sortName } = useSelector((state: RootState) => state.carsData);
+    const { data, sortName, arrChangeValue } = useSelector((state: RootState) => state.carsData);
 
     const dispatch = useDispatch();
 
+    useEffect(() => {
+        if (arrChangeValue) {
+            setSortData(arrChangeValue);
+        }
+    }, [arrChangeValue]);
+
     const handleSort = (field: string) => {
-        const name = field;
         if (data) {
             if (sortName === field) {
                 if (sortClick === 0) {
                     if (sortData) {
                         const sortDataConstract = [...sortData].sort((a: any, b: any) =>
-                            a[name] > b[name] ? 1 : -1
+                            a[field] > b[field] ? 1 : -1
                         );
                         setSortData(sortDataConstract);
                         setSortClick(1);
@@ -38,21 +42,26 @@ export const SortTable: React.FC<IProps> = ({ sortData, setSortData, modified })
                                 b[field] > a[field] ? 1 : -1
                             );
                             setSortData(sortDataConstract);
+
                             setSortClick(2);
                         } else {
-                            if (modified) {
-                                setSortData(modified);
+                            if (sortData) {
+                                const sortDataConstract = [...sortData].sort((a: any, b: any) =>
+                                    a['id'] > b['id'] ? 1 : -1
+                                );
+                                setSortData(sortDataConstract);
+                                setSortClick(0);
                             }
-                            setSortClick(0);
                         }
                     }
                 }
             } else {
                 if (sortData) {
                     const sortDataConstract = [...sortData].sort((a: any, b: any) =>
-                        a[name] > b[name] ? 1 : -1
+                        a[field] > b[field] ? 1 : -1
                     );
                     setSortData(sortDataConstract);
+
                     setSortClick(1);
                 }
             }
@@ -65,8 +74,9 @@ export const SortTable: React.FC<IProps> = ({ sortData, setSortData, modified })
     };
 
     const handleRestart = () => {
-        if (modified) {
-            setSortData(modified);
+        if (sortData) {
+            const sortDataConstract = [...sortData].sort((a: any, b: any) => (a['id'] > b['id'] ? 1 : -1));
+            setSortData(sortDataConstract);
             setSortClick(0);
         }
     };
@@ -82,7 +92,7 @@ export const SortTable: React.FC<IProps> = ({ sortData, setSortData, modified })
                     <SSortText>Сортировать по цене</SSortText>
                     <SortIcon sortClick={sortClick} />
                 </SSortItemWrapper>
-                <button onClick={handleRestart}>Сбросить сортировку</button>
+                <button onClick={() => handleRestart()}>Сбросить сортировку</button>
             </SSortWrapper>
         </>
     );

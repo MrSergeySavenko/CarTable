@@ -8,6 +8,12 @@ const initialState: IDataState = {
     isError: false,
     error: '',
     sortName: '',
+    itemId: 0,
+    itemName: '',
+    itemModel: '',
+    itemPrice: '',
+    changeArr: null,
+    arrChangeValue: null,
 };
 
 export const dataSlice = createSlice({
@@ -25,6 +31,43 @@ export const dataSlice = createSlice({
         },
         addSortName(state: Draft<IDataState>, action: PayloadAction<string>) {
             return { ...state, sortName: action.payload };
+        },
+        addItemId(state: Draft<IDataState>, action: PayloadAction<number>) {
+            return { ...state, itemId: action.payload };
+        },
+        addItemName(state: Draft<IDataState>, action: PayloadAction<string>) {
+            return { ...state, itemName: action.payload };
+        },
+        addItemModel(state: Draft<IDataState>, action: PayloadAction<string>) {
+            return { ...state, itemModel: action.payload };
+        },
+        addItemPrice(state: Draft<IDataState>, action: PayloadAction<string>) {
+            return { ...state, itemPrice: action.payload };
+        },
+        addSortArr(state: Draft<IDataState>, action: PayloadAction<Array<IData>>) {
+            return { ...state, changeArr: action.payload };
+        },
+        changeSortData(state: Draft<IDataState>) {
+            return {
+                ...state,
+                arrChangeValue: state.changeArr
+                    ? state.changeArr.map((item: IData) => {
+                          const newItem = { ...item };
+                          if (item.id === state.itemId + 1) {
+                              if (state.itemName !== '') {
+                                  newItem.name = String(state.itemName);
+                              }
+                              if (state.itemModel !== '') {
+                                  newItem.model = String(state.itemModel);
+                              }
+                              if (state.itemPrice !== '') {
+                                  newItem.price = state.itemPrice;
+                              }
+                          }
+                          return newItem;
+                      })
+                    : state.changeArr,
+            };
         },
     },
 });

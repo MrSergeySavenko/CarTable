@@ -23,13 +23,24 @@ export const SCarsTableItem = styled('div')(() => ({
 export const SCarsChars = styled('input')(() => ({
     border: 'none',
     backgroundColor: '#fff',
-
+    width: '100px',
     '&::-webkit-input-placeholder': {
         color: '#000',
     },
 }));
 
-export const SCrossImg = styled('button')(() => ({
+interface IProp {
+    input: boolean;
+}
+
+export const SItemWrapper = styled('div')((item: IProp) => ({
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    maxWidth: item ? '500px' : '300px',
+}));
+
+export const SButton = styled('button')(() => ({
     padding: '4px',
     borderColor: '#000',
     cursor: 'pointer',

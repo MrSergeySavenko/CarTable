@@ -6,13 +6,13 @@ import { setupStore } from './__data__/store';
 
 import { Provider } from 'react-redux';
 
-import { App } from './page/App';
+import { Cars } from './page/Cars';
 
 const store = setupStore();
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
     <Provider store={store}>
-        <App />
+        <Cars />
     </Provider>
 );

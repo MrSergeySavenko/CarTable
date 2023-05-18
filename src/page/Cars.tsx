@@ -4,9 +4,10 @@ import { RootState } from '../__data__/store';
 import { fetchDataLow } from '../__data__/actions/carsData.actions';
 import { CarsTable } from '../components/CarsTable/CarsTable';
 import { SPadeWrapper } from './Cars.style';
+import { dataSlice } from '../__data__/reduser';
 
-export const App: React.FC = () => {
-    const data = useSelector((state: RootState) => state.carsData.data);
+export const Cars: React.FC = () => {
+    const { data, changeArr } = useSelector((state: RootState) => state.carsData);
 
     const [sortData, setSortData] = useState(data);
 
@@ -22,6 +23,10 @@ export const App: React.FC = () => {
 
     useEffect(() => {
         setSortData(data);
+        if (sortData) {
+            dispatch(dataSlice.actions.addSortArr(sortData));
+        }
+        console.log(changeArr);
     }, [data]);
 
     return (

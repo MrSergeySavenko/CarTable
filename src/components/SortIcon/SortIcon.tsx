@@ -12,12 +12,12 @@ export const SortIcon: React.FC<IProps> = ({ sortClick }) => {
 
     const sortIcon = () => {
         if (sortClick === 2) {
-            return <div data-nav='info'>N...1</div>;
+            return <div>N...1</div>;
         } else {
             if (sortClick === 1) {
-                return <div data-nav='info'>1...N</div>;
+                return <div>1...N</div>;
             } else {
-                return <div data-nav='info'>random</div>;
+                return <div>random</div>;
             }
         }
     };
